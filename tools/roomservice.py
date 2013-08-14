@@ -50,7 +50,7 @@ except:
 
 page = 1
 while not depsonly:
-    githubreq = urllib2.Request("https://api.github.com/users/ParanoidAndroid/repos?per_page=100&page=%d" % page)
+    githubreq = urllib2.Request("https://api.github.com/users/thefutureosp/repos?per_page=100&page=%d" % page)
     if githubauth:
         githubreq.add_header("Authorization","Basic %s" % githubauth)
     result = json.loads(urllib2.urlopen(githubreq).read())
@@ -134,12 +134,12 @@ def add_to_manifest(repositories):
         repo_name = repository['repository']
         repo_target = repository['target_path']
         if exists_in_tree(lm, repo_name):
-            print 'ParanoidAndroid/%s already exists' % (repo_name)
+            print 'thefutureosp/%s already exists' % (repo_name)
             continue
 
-        print 'Adding dependency: ParanoidAndroid/%s -> %s' % (repo_name, repo_target)
+        print 'Adding dependency: thefutureosp/%s -> %s' % (repo_name, repo_target)
         project = ElementTree.Element("project", attrib = { "path": repo_target,
-            "remote": "github", "name": "ParanoidAndroid/%s" % repo_name, "revision": "jb43" })
+            "remote": "github", "name": "thefutureosp/%s" % repo_name, "revision": "orca3" })
 
         if 'branch' in repository:
             project.set('revision',repository['branch'])
@@ -156,7 +156,7 @@ def add_to_manifest(repositories):
 
 def fetch_dependencies(repo_path):
     print 'Looking for dependencies'
-    dependencies_path = repo_path + '/pa.dependencies'
+    dependencies_path = repo_path + '/orca.dependencies'
     syncable_repos = []
 
     if os.path.exists(dependencies_path):
@@ -165,7 +165,7 @@ def fetch_dependencies(repo_path):
         fetch_list = []
 
         for dependency in dependencies:
-            if not is_in_manifest("ParanoidAndroid/%s" % dependency['repository']):
+            if not is_in_manifest("thefutureosp/%s" % dependency['repository']):
                 fetch_list.append(dependency)
                 syncable_repos.append(dependency['target_path'])
 
@@ -209,4 +209,4 @@ else:
             print "Done"
             sys.exit()
 
-print "Repository for %s not found in the ParanoidAndroid Github repository list. If this is in error, you may need to manually add it to your local_manifest.xml." % device
+print "Repository for %s not found in the The Orca Project or The Future OSP Github repository list. If this is in error, you may need to manually add it to your local_manifest.xml." % device
